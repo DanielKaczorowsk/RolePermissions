@@ -1,20 +1,15 @@
-<?php
-namespace Controller;
+<?php 
+namespace controller;
 use Model;
-use Obj;
-use Contex;
 include "../"."SPL_autoload_register.php";
-
-class Controller{
-	public function __construct(){
-		$Rola = new Obj\Rola();
-		$Uprawnienia = new Obj\Uprawnienia();
-		$MyBase = new Model\MyBasePDO();
-		$PermissionRole = new Model\PermissionRole();
-		$Contex = new Contex\Contex($MyBase,$PermissionRole,$Rola,$Uprawnienia);
-		$Rola->setRola('gosc');
-		print_r($PermissionRole->loadRole($Rola));
+class controller
+{
+	private $UserControl;
+	public function __construct()
+	{
+		$UserControl = new Model\UserControl;
+		print_r($UserControl->loadRole('gosc'));
 	}
-};
-$controler = new controller;
+}
+$controller = new controller;
 ?>

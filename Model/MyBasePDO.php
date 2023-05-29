@@ -27,19 +27,26 @@ public function reset():void
 public function Select(array $select)
 {
 	$this->reset();
-	$this->query->base = 'Select '. implode(',',$select);
+	$this->query->base = 'SELECT '. implode(',',$select);
 	$this->query->type = 'select';
 	return $this;
 }
 public function From($from)
 {
-	$this->query->From = ' From '.$from;
+	$this->query->From = ' FROM '.$from;
 	return $this;
 }
 public function Where(array $where)
 {
-	$this->query->Where = ' Where '. implode(' AND ',$where);
+	$this->query->Where = ' WHERE '. implode(' AND ',$where);
 	return $this;
+}
+public function OrWhere(array $where){
+	if(isset($this->query->Where)){
+		$this->query->OrWhere = 'WHERE '.implode('OR ',$where);
+	}else {
+		$this->query->OrWhere = 'OR WHERE'.implode('Or',$where);
+	}
 }
 public function ON(array $on)
 {

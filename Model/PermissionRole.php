@@ -6,9 +6,10 @@ use Model;
 class PermissionRole
 {
 
-Private $stmt,$connection,$Rola,$Uprawnienia;
+Private $stmt,$connection,$Rola,$Uprawnienia,$query, $loadRole, $loadUprawnienia;
 public function setConnection(Model\interface_connect $Model){
 	$this->connection = $Model->getConnect();
+	$this->query = $Model;
 }
 public function setoption(Obj\Rola $rola,Obj\Uprawnienia $uprawnienia)
 {
@@ -20,16 +21,22 @@ public function saveRole(){
 		$this->stmt->execute(['role'=>$this->Rola, 'uprawnienia'=>$this->Uprawnienia]);
 }
 public function loadRole(){
-	$this->stmt = $this->connection->prepare("SELECT a.rola, b.uprawnienia from role a 
-	INNER JOIN uprawnienie b ON a.uprawnienia_id = b.id Where a.rola = :role");
-	$this->stmt->execute(['role'=>$this->Rola]);
-	return $this->stmt->fetchAll();
+	$this->loadRole= $this->query->Select(['a.rola','b.uprawnienia'])
+		->From('role a')
+		->INNERJOIN('uprawnienie b')
+		->ON(['a.uprawnienia_id = b.id'])
+		->Where(["a.rola='".$this->Rola."'"])
+		->getSql();
+	return $this->loadRole;
 }
 public function loadUprawnienia(){
-	$this->stmt = $this->connection->prepare("SELECT a.rola, b.uprawnienia from role a 
-	INNER JOIN uprawnienie b ON a.uprawnienia_id = b.id Where b.uprawnienia = :uprawnienia");
-	$this->stmt->execute(['uprawnienia'=>$this->Uprawnienia]);
-	return $this->stmt->fetchAll();
+	$this->loadUprawnienia = $this->query->Select(['a.rola, b.uprawnienia'])
+	->From('role a')
+	->INNERJOIN('uprawnienie b')
+	->ON(['a.uprawnienia_id = b.id'])
+	->Where(["b.uprawnienia ='".$this->Uprawnienia."'"])
+	->getSql();
+	return $this->loadUprawnienia;
 }
 }
 ?>

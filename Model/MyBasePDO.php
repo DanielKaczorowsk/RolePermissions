@@ -5,7 +5,7 @@ use pdo;
 require_once "interface_connect.php";
 
 class MyBasePDO implements interface_connect{
-Private $connection,$Rola,$Uprawnienia, $stmt;
+Private $connection, $stmt, $query, $result;
 public function Connect(){
 	$user='daniel';
 	$pass='samsung1234';
@@ -19,6 +19,61 @@ $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 }
 public function getConnect(){
 	return $this->connection;
+}
+public function reset():void
+{
+	$this->query = new \stdClass();
+}
+public function Select(array $select)
+{
+	$this->reset();
+	$this->query->base = 'Select '. implode(',',$select);
+	$this->query->type = 'select';
+	return $this;
+}
+public function From($from)
+{
+	$this->query->From = ' From '.$from;
+	return $this;
+}
+public function Where(array $where)
+{
+	$this->query->Where = ' Where '. implode(' AND ',$where);
+	return $this;
+}
+public function ON(array $on)
+{
+	$this->query->On = ' ON '.implode(' AND ',$on);
+	return $this;
+}
+public function INNERJOIN($innerjoin)
+{
+	$this->query->INNERJOIN = ' INNER JOIN '.$innerjoin;
+	return $this;
+}
+public function getSql()
+{
+	$query = $this->query;
+	$sql = $query->base;
+	if(isset($this->query->From)){
+		$sql .= $this->query->From;
+	}else{
+		$sql .= $this->query->From = ' From role';
+	}
+		if (isset($this->query->INNERJOIN)){
+		$sql .= $this->query->INNERJOIN;
+	}
+	if(isset($this->query->On))
+	{
+		$sql .= $this->query->On;
+	}
+		if(isset($this->query->Where)){
+		$sql .= $this->query->Where;
+	}
+	$sql .=';';
+	$this->stmt = $this->connection->prepare($sql);
+	$this->stmt->execute();
+	return $this->stmt->fetchAll();
 }
 };
 ?>

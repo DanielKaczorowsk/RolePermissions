@@ -10,8 +10,11 @@
 # Your Data Base
     use interface Model interface_connect
 # Use DataBase Query
+     $this->base = new Model\MyBasePDO;
+     $this->base->Connect();
     ->Select(['1','2'])
     ->From('Your From') -> null = From role
     ->Where(['Role=Admin','Uprawnienia=Adder']) -> implode AND
+    ->OrWhere(['Role=Admin','Uprawnienia=Adder']) ->implode OR, if Where is not null can use WHERE then OrWhere
     ->ON(['']) ->implode AND
     ->INNERJOIN('string')

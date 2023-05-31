@@ -17,4 +17,4 @@
     ->Where(['Role=Admin','Uprawnienia=Adder']) -> implode AND
     ->OrWhere(['Role=Admin','Uprawnienia=Adder']) ->implode OR, if Where is not null can use WHERE then OrWhere
     ->ON(['']) ->implode AND
-    ->INNERJOIN('string')
+    ->INNERJOIN(['innerjoin'],'['on']') -> ->INNERJOIN(['permission a','role b'],['a.id=b.id_permission']);

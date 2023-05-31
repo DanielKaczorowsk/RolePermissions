@@ -10,7 +10,7 @@ public function Connect(){
 	$user='daniel';
 	$pass='samsung1234';
 try {
-$this->connection = new PDO("mysql:host=localhost;dbname=ur",$user,$pass,
+$this->connection = new PDO("mysql:host=localhost;dbname=database",$user,$pass,
 array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
@@ -53,9 +53,12 @@ public function ON(array $on)
 	$this->query->On = ' ON '.implode(' AND ',$on);
 	return $this;
 }
-public function INNERJOIN($innerjoin)
+public function INNERJOIN(array $innerjoin,array $on)
 {
-	$this->query->INNERJOIN = ' INNER JOIN '.$innerjoin;
+	foreach($innerjoin as $key=>$val){
+		$inneron[]=" INNER JOIN ".$innerjoin[$key]." ON ".$on[$key];
+	}
+	$this->query->INNERJOIN = implode(' ',$inneron);
 	return $this;
 }
 public function getSql()
@@ -81,6 +84,7 @@ public function getSql()
 	$this->stmt = $this->connection->prepare($sql);
 	$this->stmt->execute();
 	return $this->stmt->fetchAll();
+	//return $sql;
 }
 };
 ?>

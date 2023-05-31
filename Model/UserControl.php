@@ -20,9 +20,13 @@ class UserControl{
 		$Contex = new Contex\Contex($this->MyBase,$this->PermissionRole,$this->Rola,$this->Uprawnienia);
 		return $table1 = $this->PermissionRole->loadRole();
 	}
+	public function findUserRoleId(int $user){
+		$Contex = new Contex\Contex($this->MyBase,$this->PermissionRole,$this->Rola,$this->Uprawnienia);
+		return $table1 = $this->PermissionRole->findUserRoleId($user);
+	}
 	public function loadUprawnienia($uprawnienia)
 	{
-		$this->Rola->setUprawnienia($uprawnienia);
+		$this->Uprawnienia->setUprawnienia($uprawnienia);
 		$Contex = new Contex\Contex($this->MyBase,$this->PermissionRole,$this->Rola,$this->Uprawnienia);
 		return $table1 = $this->PermissionRole->loadUprawnienia();
 	}

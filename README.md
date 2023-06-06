@@ -1,3 +1,12 @@
+# Login
+    $this->login = new User\Login;
+		$this->login
+		->name('Piotr')
+		->password('1234')
+		->login(Youre datebase);
+# Auth
+    $this->UserControl->Auth() -> Auth
+    $this->UserControl->Auth()->Roles() -> Roles
 # Load Role
     $UserControl = new Model\UserControl;
 		$UserControl->loadRole('role')
